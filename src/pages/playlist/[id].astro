@@ -1,0 +1,80 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro";
+import PlayListItemCard from "@/components/PlayListItemCard.astro";
+import { allPlaylists, songs } from "@/services/data";
+
+const { id } = Astro.params;
+
+const playlist = allPlaylists.find((playlist) => playlist.id === id);
+const playListSongs = songs.filter((song) => song.albumId === playlist?.albumId);
+
+// En este caso que el número de albumes es limitado lo podemos hacer con una página estática para cada album,
+// pero si el número de albumes es muy grande, indicaremos que lo genere en tiempo de ejecución
+// mediante la siguiente línea en el fichero astro.config mjs:
+// export default defineConfig({
+//   ...
+//   output: 'server'
+// });
+export async function getStaticPaths() {
+  return allPlaylists.map((playlist) => ({ 
+    params: { 
+      id: playlist.id
+    }
+  }))
+}
+
+---
+
+<Layout title="Spotify Clone">
+  <div
+    id="playlist-container"
+    class="relative flex flex-col h-full bg-zinc-900 overflow-x-hidden"
+    transition:name=`playlist ${id} box`
+  >
+    <!-- pageheader -->
+
+    <header class="flex flex-row gap-8 px-6 mt-10">
+      <picture class="aspect-square w-52 h-52 flex-none">
+        <img 
+          src={playlist?.cover} 
+          alt={`Carátula de ${playlist?.title}`} 
+          class="w-full h-full object-cover shadow-lg"
+          transition:name=`playlist ${playlist?.id} image` 
+        />
+      </picture>
+    
+      <div class="flex flex-col justify-between">
+        <h2 class="flex flex-1 items-end">Playlist</h2>
+        <div>
+          <h1 class="title-clamp text-5xl font-bold block">
+            {playlist?.title}
+            <span transition:name=`playlist ${playlist?.id} title`></span>
+          </h1>
+        </div>
+
+        <div class="flex-1 flex items-end">
+          <div class="text-sm text-gray-300 font-normal">
+            <div transition:name=`playlist ${playlist?.id} artists`>
+              <span>{playlist?.artists.join(", ")}</span>
+            </div>
+            <p class="mt-1">
+              <!-- TODO: Calcular el total de canciones y el tiempo de duración -->
+              <span class="text-white">50 canciones</span>, 3h aproximadamente
+
+            </p>
+          </div>
+        </div>
+
+
+      </div>      
+    
+    </header>
+
+    <div class="relative z-10 px-6 pt-10"></div>
+
+    <!-- <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/80"></div> -->
+    
+    <style></style>
+  </div>
+</Layout>
