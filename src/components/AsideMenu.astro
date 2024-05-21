@@ -1,19 +1,15 @@
 ---
+// Barra lateral izquierda
 import HomeIcon from "@/icons/Home.astro";
 import SearchIcon from "@/icons/Search.astro";
 import LibraryIcon from "@/icons/Library.astro";
 import SideMenuItem from "./SideMenuItem.astro";
-import SideMenuCard from "./SideMenuCard.astro";
+import SideMenuCardTitle from "./SideMenuCardTitle.astro";
 
 import { playlists } from "@/services/data";
-
-import PreviousIcon from "@/icons/Previous.astro";
-import NextIcon from "@/icons/Next.astro";
-import PlayIcon from "@/icons/Play.astro";
-import PauseIcon from "@/icons/Pause.astro";
 ---
 
-<nav class="flex flex-col flex-1 gap-2">
+<nav class="flex flex-col flex-1 gap-2 overflow-hidden">
   <div class="bg-zinc-900 rounded-lg p-2">
     <ul>
       <SideMenuItem href="/">
@@ -32,8 +28,8 @@ import PauseIcon from "@/icons/Pause.astro";
         <LibraryIcon />
         Tu biblioteca
       </SideMenuItem>
-      <div class="mt-4">
-        {playlists.map((playlist) => <SideMenuCard playlist={playlist} />)}
+      <div class="mt-4 overflow-y-auto h-[calc(100vh-315px)]">
+        {playlists.map((playlist) => <SideMenuCardTitle playlist={playlist} />)}
       </div>
     </ul>
   </div>

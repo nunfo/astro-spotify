@@ -1,0 +1,39 @@
+---
+// Componente PlaylistItem de la barra lateral izquierda
+import type { Song } from '@/services/data';
+
+interface Props {
+  song: Song;
+}
+
+const { song } = Astro.props;
+console.log(song);
+const { image, title, artists } = song;
+
+// TODO: Hacerlo con Intl.ListFormat
+const artistsString = artists.join(', ');
+---
+
+<a class="playlist-item flex relative p-2 overflow-hidden items-center gap-4 rounded-md  hover:bg-zinc-800" 
+>
+  <picture class="w-12 h-12 flex-none">
+    <img 
+      src={image} 
+      alt={`Carátula de ${title} por ${artistsString}`} 
+      class="w-full h-full object-cover rounded-md" 
+    />
+  </picture>
+  <div class="flex flex-auto flex-col truncate">
+    <h4 class="text-white text-sm">{title}</h4>
+    <span class="text-neutral-500 text-sm">{artistsString}</span>
+  </div>
+
+</a>
+<!-- <SideMenuItem href="/#" key={playlist.id}>
+//   <img
+//     src={playlist.image}
+//     alt={playlist.name}
+//     class="w-8 h-8 rounded-md"
+//   />
+//   {playlist.name}
+// </SideMenuItem> -->

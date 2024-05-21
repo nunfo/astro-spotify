@@ -1,0 +1,49 @@
+---
+// Tabla con la lista de canciones que se mostrará en la página [id].astro de cada playlist.
+import Time from "@/icons/Time.astro";
+import SideMenuCardSong from "./SideMenuCardSong.astro";
+import type { Song } from "@/services/data";
+
+interface Props {
+  songs: Song[];
+  album: number;
+}
+
+const { songs, album } = Astro.props;
+console.log(songs);
+---
+
+<table class="table-auto text-left min-w-full divide-y-2 divide-gray-500/50">
+  <thead>
+    <tr class="text-gray-300 text-sm font-light">
+      <th class="px-4 py-2">#</th>
+      <th class="px-4 py-2">Título</th>
+      <th class="px-4 py-2">Album</th>
+      <th class="px-4 py-2"><Time /></th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      songs.map(
+        (song, index) => (
+          console.log(song, album),
+          (
+            <tr>
+              <td class="px-4 py-2">{index + 1}</td>
+              <td class="px-4 py-2">
+                {song.albumId === album && <SideMenuCardSong song={song} />}
+              </td>
+              <td class="px-4 py-2">{song.album}</td>
+              <td class="px-4 py-2">
+                <div class="flex items-center space-x-1">
+                  <Time class="w-4 h-4" />
+                  <span>{song.duration}</span>
+                </div>
+              </td>
+            </tr>
+          )
+        ),
+      )
+    }
+  </tbody>
+</table>
